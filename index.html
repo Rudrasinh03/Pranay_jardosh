@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Pranay Jardosh | P.P. Savani Group</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root{
+    --orange: #FF8C00;
+    --navy: #001f54;
+    --light-navy: #003399;
+    --dark-bg: #0a0a0a;
+    --glass: rgba(255, 255, 255, 0.1);
+    --soft-blue: #f0f4f8;
+}
+html,body{
+    margin:0; width:100%; height:100%; background: var(--dark-bg);
+    display:flex; justify-content:center; align-items:center;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    overflow:hidden;
+}
+#container{ width:360px; height:640px; position: relative; background: #fff; border-radius: 32px; overflow: hidden; box-shadow:0 30px 60px rgba(0,0,0,0.5); }
+
+/* ================= CREATIVE DIRECTOR CARD ================= */
+#director-card{
+    width:100%; height:100%; background: #ffffff;
+    display:flex; flex-direction:column; position: absolute; top:0; left:0; z-index: 10;
+}
+.dir-header { 
+    background: linear-gradient(135deg, var(--navy) 0%, var(--light-navy) 100%); 
+    height: 220px; width: 100%; position: relative;
+    display: flex; justify-content: center; align-items: flex-end;
+}
+.dir-header::before {
+    content: ""; position: absolute; top: -50px; left: -50px; width: 200px; height: 200px;
+    background: rgba(255,255,255,0.05); border-radius: 50%;
+}
+.dir-header::after {
+    content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
+    background: #fff; clip-path: polygon(0 100%, 100% 100%, 100% 0);
+}
+
+.profile-container { position: relative; margin-bottom: -60px; z-index: 5; }
+.profile-img { 
+    width: 140px; height: 140px; border-radius: 50%; 
+    border: 5px solid #fff; object-fit: cover; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+}
+
+.dir-content { 
+    padding: 70px 24px 20px; text-align: center; flex-grow: 1; 
+    display: flex; flex-direction: column; align-items: center; 
+}
+.dir-content h2 { margin: 0; font-size: 28px; color: var(--navy); font-weight: 800; }
+.dir-content .role-tag { 
+    background: rgba(255, 140, 0, 0.1); color: var(--orange); 
+    padding: 4px 15px; border-radius: 20px; font-weight: 700; 
+    font-size: 12px; text-transform: uppercase; margin-top: 8px;
+}
+.dir-content .dept { font-size: 14px; color: #666; margin-top: 5px; font-weight: 500; }
+
+.contact-card { 
+    text-align: left; background: #fff; width: 100%;
+    border-radius: 24px; padding: 20px; margin-top: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;
+}
+.info-row { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; text-decoration: none; }
+.icon-box { 
+    width: 40px; height: 40px; background: var(--soft-blue); color: var(--navy); 
+    border-radius: 12px; display: flex; align-items: center; justify-content: center; 
+    font-size: 16px; flex-shrink: 0;
+}
+.info-text { display: flex; flex-direction: column; }
+.info-text label { font-size: 10px; text-transform: uppercase; color: #999; font-weight: 700; }
+.info-text span { font-size: 13px; color: var(--navy); font-weight: 600; }
+
+.save-btn {
+    width: 100%; background: var(--navy); color: #fff; border: none;
+    padding: 16px; border-radius: 15px; font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    cursor: pointer; transition: 0.3s;
+}
+
+.view-branches-bar { 
+    background: var(--navy); color: #fff; width: 100%; padding: 22px; 
+    font-weight: 700; text-align: center; cursor: pointer; border:none; 
+    font-size: 14px; letter-spacing: 1px;
+}
+
+/* ================= LIST VIEW & BACK ARROW ================= */
+#list-view { width:100%; height:100%; background:#f8f9fa; display:none; flex-direction:column; position:absolute; top:0; left:0; z-index:20; }
+.header-bar { padding:45px 20px 10px; background:var(--navy); color:white; display:flex; align-items:center; gap:15px; }
+.back-arrow { font-size: 18px; cursor: pointer; transition: 0.2s; }
+.back-arrow:hover { color: var(--orange); }
+
+.search-container { padding: 10px 15px; background: var(--navy); }
+.search-box { width: 100%; background: rgba(255,255,255,0.15); border: none; border-radius: 12px; padding: 10px 15px; color: white; outline: none; box-sizing: border-box; }
+.scroll-area { flex: 1; overflow-y: auto; padding: 10px 15px 15px; }
+.list-item { background: white; padding: 18px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; border: 1px solid #eee; }
+.list-item span { font-weight: 700; color: var(--navy); font-size: 13px; }
+
+/* ================= CARD DETAIL VIEW & BACK BUTTON ================= */
+#card-detail-view { width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; position: absolute; top:0; left:0; z-index: 30; justify-content: center; align-items: center; }
+.card-wrapper { width: 320px; height: 500px; perspective: 1500px; position: relative; }
+.card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+.card-inner.flipped { transform: rotateY(180deg); }
+
+.card-front, .card-back { position: absolute; width: 100%; height: 100%; border-radius: 25px; backface-visibility: hidden; overflow: hidden; display: flex; flex-direction: column; }
+.card-front { background: white; }
+.card-back { background: linear-gradient(145deg, #001f54, #000); color: white; transform: rotateY(180deg); padding: 22px; box-sizing: border-box; }
+
+.school-img-box { flex: 1.6; background: #fff; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.school-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.front-info { padding: 15px 20px; text-align: center; background: var(--orange); color: white; border-radius: 35px 35px 0 0; margin-top: -20px; min-height: 130px; display: flex; flex-direction: column; justify-content: center; }
+
+/* REPLACED CROSS WITH BACK ARROW */
+.card-back-btn { position: absolute; top: -50px; left: 0; color: white; font-size: 24px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+
+.back-header { text-align: center; margin-bottom: 15px; }
+.back-header h3 { color: var(--orange); margin: 0; font-size: 18px; }
+.stats-grid { display: flex; gap: 10px; margin-bottom: 15px; }
+.stat-box { flex: 1; background: var(--glass); padding: 10px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+.stat-box i { color: var(--orange); font-size: 14px; margin-bottom: 5px; display: block; }
+
+.activities-list { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-bottom: 20px; }
+.activities-list label { color: var(--orange); font-size: 10px; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 5px; }
+
+.social-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 15px; }
+.s-link { background: var(--glass); aspect-ratio: 1; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 14px; border: 1px solid rgba(255,255,255,0.05); }
+
+.cta-btn { background: var(--orange); color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 700; margin-top: auto; display: block; font-size: 12px; text-transform: uppercase; }
+
+/* MULTI-CONTACT SELECTOR */
+#contact-picker {
+    display: none; position: absolute; bottom: 0; left: 0; width: 100%; 
+    background: white; border-radius: 25px 25px 0 0; z-index: 100;
+    padding: 20px; box-sizing: border-box; box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+}
+.picker-option { 
+    display: flex; align-items: center; gap: 15px; padding: 15px; 
+    background: var(--soft-blue); border-radius: 12px; margin-bottom: 10px;
+    text-decoration: none; color: var(--navy); font-weight: 700; font-size: 13px;
+}
+</style>
+</head>
+<body>
+
+<div id="container">
+    <div id="director-card">
+        <div class="dir-header">
+            <div class="profile-container">
+                <img src="pranay jardoh.jpg" class="profile-img" alt="Pranay Jardosh" onerror="this.src='https://via.placeholder.com/150'">
+            </div>
+        </div>
+        <div class="dir-content">
+            <h2>Pranay Jardosh</h2>
+            <div class="role-tag">Director</div>
+            <div class="dept">Academics & Operations</div>
+            
+            <div class="contact-card">
+                <a href="tel:+918905050705" class="info-row">
+                    <div class="icon-box"><i class="fas fa-phone-alt"></i></div>
+                    <div class="info-text"><label>Phone</label><span>+91 89050 50705</span></div>
+                </a>
+                <a href="mailto:director@ppsavanicbse.org" class="info-row">
+                    <div class="icon-box"><i class="fas fa-envelope"></i></div>
+                    <div class="info-text"><label>Email</label><span>director@ppsavanicbse.org</span></div>
+                </a>
+                <div class="info-row">
+                    <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="info-text"><label>Location</label><span>Surat, Gujarat</span></div>
+                </div>
+                <button class="save-btn" onclick="downloadVCard()">
+                    <i class="fas fa-download"></i> SAVE TO CONTACTS
+                </button>
+            </div>
+        </div>
+        <div class="view-branches-bar" onclick="openListView()">
+            TAP TO VIEW 13 BRANCHES <i class="fas fa-chevron-right" style="margin-left:8px; font-size:12px;"></i>
+        </div>
+    </div>
+
+    <div id="list-view">
+        <div class="header-bar">
+            <i class="fas fa-arrow-left back-arrow" onclick="closeListView()"></i>
+            <span style="font-weight: 800; letter-spacing: 1px;">CAMPUS LIST</span>
+        </div>
+        <div class="search-container">
+            <input type="text" id="campusSearch" class="search-box" placeholder="Search school name..." onkeyup="filterCampuses()">
+        </div>
+        <div class="scroll-area" id="list-container"></div>
+    </div>
+
+    <div id="card-detail-view">
+        <div class="card-wrapper">
+            <div class="card-back-btn" onclick="closeCard()">
+                <i class="fas fa-arrow-left"></i> <span>Back</span>
+            </div>
+            
+            <div class="card-inner" id="card-inner" onclick="handleCardTap(event)">
+                <div class="card-front" id="card-front"></div>
+                <div class="card-back" id="card-back"></div>
+            </div>
+
+            <div id="contact-picker">
+                <div style="color: var(--navy); font-weight: 800; margin-bottom: 15px; text-align: center; font-size: 14px;">CHOOSE CONTACT NUMBER</div>
+                <div id="picker-options-list"></div>
+                <button onclick="hidePicker()" style="width:100%; border:none; background:none; color:#777; font-size:11px; font-weight:700; margin-top:5px;">CANCEL</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const branches = [
+    { name:"P.P. Savani Chaitanya Vidya Sankul", addr:"Abrama, Surat", since:"2010", alumni:"8,500+", activities:"Robotics Lab, Vedic Maths, & Horse Riding.", img:"P.P.Savani Chaitanya Vidya Sankul.png", multiCall: ["+91 99251 66695", "+91 99251 66696", "+91 99251 66697"] },
+    { name:"P.P. Savani Vidhyabhavan", addr:"Hirabaugh, Surat", since:"2005", alumni:"12,000+", activities:"Sports Arena & Innovation Hub.", img:"P.P.Savani Vidhyabhavan.png", call:"tel:+918905050705" },
+    { name:"Radiant English Academy", addr:"Umra & Piplod", since:"2012", alumni:"5,200+", activities:"Music Studio & Theatre Club.", img:"Radiant English Academy Surat.png", call:"tel:+918905050705" },
+    { name:"P.P. Savani Vidyalay", addr:"Dhartinagar, Surat", since:"2008", alumni:"9,800+", activities:"Digital Libraries & NCC.", img:"P.P.Savani Vidyalay.png", call:"tel:+918905050705" },
+    { name:"Radiant English Academy", addr:"Dabholi, Surat", since:"2015", alumni:"3,400+", activities:"Yoga & Karate Academy.", img:"Radiant English Academy.png", call:"tel:+918905050705" },
+    { name:"P.P. Savani International School", addr:"Pal, Surat", since:"2014", alumni:"4,100+", activities:"Cambridge Curriculum & Coding Labs.", img:"branch6.jpg", call:"tel:+918905050705" },
+    { name:"Savani Heritage Academy", addr:"Katargam, Surat", since:"2011", alumni:"6,700+", activities:"Cultural Arts Center & Archery.", img:"branch7.jpg", call:"tel:+918905050705" },
+    { name:"P.P. Savani Kids", addr:"Adajan, Surat", since:"2016", alumni:"2,000+", activities:"Montessori Playway & Puppetry.", img:"branch8.jpg", call:"tel:+918905050705" },
+    { name:"Radiant Global School", addr:"Vesu, Surat", since:"2018", alumni:"1,500+", activities:"AI Integration & Astronomy Club.", img:"branch9.jpg", call:"tel:+918905050705" },
+    { name:"P.P. Savani Excellence Center", addr:"Varachha, Surat", since:"2009", alumni:"10,200+", activities:"IIT-JEE Coaching & Swimming.", img:"branch10.jpg", call:"tel:+918905050705" },
+    { name:"Chaitanya Vidya Mandir", addr:"Kamrej, Surat", since:"2013", alumni:"3,800+", activities:"Vocational Skill Training.", img:"branch11.jpg", call:"tel:+918905050705" },
+    { name:"P.P. Savani Gurukul", addr:"Ankleshwar", since:"2007", alumni:"7,400+", activities:"Residential Gurukul System.", img:"branch12.jpg", call:"tel:+918905050705" },
+    { name:"Radiant Primary Wing", addr:"Rander, Surat", since:"2017", alumni:"1,200+", activities:"Interactive Smart Boards.", img:"branch13.jpg", call:"tel:+918905050705" }
+];
+
+function handleCardTap(e) {
+    if (e.target.closest('.social-grid') || e.target.closest('#contact-picker')) return;
+    document.getElementById('card-inner').classList.toggle('flipped');
+}
+
+function handlePhoneClick(event, index) {
+    event.stopPropagation();
+    const b = branches[index];
+    if (b.multiCall) { showPicker(b.multiCall); } else { window.location.href = b.call; }
+}
+
+function showPicker(numbers) {
+    const list = document.getElementById('picker-options-list');
+    list.innerHTML = numbers.map((n, i) => `<a href="tel:${n.replace(/\s/g,'')}" class="picker-option"><i class="fas fa-phone"></i> Option ${i+1}: ${n}</a>`).join('');
+    document.getElementById('contact-picker').style.display = 'block';
+}
+
+function hidePicker() { document.getElementById('contact-picker').style.display = 'none'; }
+
+function openCard(index) {
+    const b = branches[index];
+    const front = document.getElementById('card-front');
+    const back = document.getElementById('card-back');
+    document.getElementById('card-inner').classList.remove('flipped');
+    hidePicker();
+
+    front.innerHTML = `
+        <div class="school-img-box"><img src="${b.img}" onerror="this.src='https://via.placeholder.com/300x300?text=Logo'"></div>
+        <div class="front-info">
+            <h2 style="margin:0; font-size:16px; line-height:1.2; font-weight:800;">${b.name}</h2>
+            <p style="font-size:12px; margin:8px 0 0; opacity:0.9;"><i class="fas fa-location-dot"></i> ${b.addr}</p>
+            <div style="font-size:8px; font-weight:800; letter-spacing:1px; background:rgba(255,255,255,0.2); padding:5px 15px; border-radius:20px; align-self:center; margin-top:10px;">TAP TO FLIP</div>
+        </div>
+    `;
+
+    back.innerHTML = `
+        <div class="back-header"><h3>CAMPUS OVERVIEW</h3></div>
+        <div class="stats-grid">
+            <div class="stat-box"><i class="fas fa-calendar-check"></i><span>Founded</span><strong>${b.since}</strong></div>
+            <div class="stat-box"><i class="fas fa-user-graduate"></i><span>Alumni</span><strong>${b.alumni}</strong></div>
+        </div>
+        <div class="activities-list"><label>Key Highlights</label><p style="font-size:11px; margin:0;">${b.activities}</p></div>
+        <div class="social-grid">
+            <a href="#" class="s-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="s-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="s-link"><i class="fab fa-youtube"></i></a>
+            <div class="s-link" onclick="handlePhoneClick(event, ${index})"><i class="fas fa-phone-alt"></i></div>
+            <a href="#" class="s-link"><i class="fas fa-directions"></i></a>
+        </div>
+        <a href="https://ppsavanicbse.org" class="cta-btn">Official Website</a>
+    `;
+    document.getElementById('card-detail-view').style.display = 'flex';
+}
+
+function downloadVCard() {
+    const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Pranay Jardosh\nORG:P.P. Savani Group\nTITLE:Director\nTEL;TYPE=CELL:+918905050705\nEMAIL:director@ppsavanicbse.org\nEND:VCARD`;
+    const blob = new Blob([vcard], { type: 'text/vcard' });
+    const url = window.URL.createObjectURL(blob);
+    const newLink = document.createElement('a');
+    newLink.download = 'Pranay_Jardosh.vcf';
+    newLink.href = url;
+    newLink.click();
+}
+
+function renderList(data) {
+    const list = document.getElementById('list-container');
+    list.innerHTML = data.map(b => {
+        const idx = branches.findIndex(item => item.name === b.name);
+        return `<div class="list-item" onclick="openCard(${idx})"><span>${b.name}</span><i class="fas fa-chevron-right"></i></div>`;
+    }).join('');
+}
+
+function filterCampuses() {
+    const query = document.getElementById('campusSearch').value.toLowerCase();
+    const filtered = branches.filter(b => b.name.toLowerCase().includes(query));
+    renderList(filtered);
+}
+
+function openListView() { renderList(branches); document.getElementById('list-view').style.display = 'flex'; }
+function closeListView() { document.getElementById('list-view').style.display = 'none'; }
+function closeCard() { document.getElementById('card-detail-view').style.display = 'none'; }
+</script>
+</body>
+</html>
